@@ -1,52 +1,48 @@
-# amr-motifs
-Pipeline en R utilizando el paquete Biostrings para la identificación y cuantificación de motivos asociados a resistencia antimicrobiana (genes bla / betalactamasas) en secuencias cortas de bacterias.
+# amr-motifs: Detección y Cuantificación de Motivos de Resistencia Antimicrobiana en R
 
------------------------------------------------------------------------------------------------------------------------------------------
+![R](https://img.shields.io/badge/R-%3E%3D%204.0.0-blue.svg)
+![Bioconductor](https://img.shields.io/badge/Bioconductor-Biostrings-green.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-## Estructura de un Pipeline con Biostrings
+Pipeline en R para la identificación, búsqueda bidireccional y cuantificación de motivos de secuencia conservados asociados a genes de resistencia antimicrobiana (*AMR*), enfocado en la familia de genes de beta-lactamasas (ej. *ampC*, *bla*).
 
-Para detectar y cuantificar un motivo específico en un conjunto de lecturas cortas, el flujo bioinformático sigue 4 etapas clave:
-
-[ Archivo FASTQ ] ➔ [ Lectura y Limpieza ] ➔ [ Búsqueda de Motivo ] ➔ [ Cuantificación / Conteo ]
 ---
 
-## Paso a Paso con Código en R
+## Tabla de Contenidos
 
-### 1. Carga de Librerías y Datos
-Leemos el archivo de lecturas cortas en formato FASTQ usando la función `readDNAStringSet()` de **Biostrings**.
+- [Propósito del Proyecto](#-propósito-del-proyecto)
+- [Objetivos de Aprendizaje](#-objetivos-de-aprendizaje)
+- [Estructura del Repositorio](#-estructura-del-repositorio)
+- [Requisitos y Dependencias](#-requisitos-y-dependencias)
+- [Instrucciones de Uso](#-instrucciones-de-uso)
+- [Control de Versiones y Flujo de Trabajo](#-control-de-versiones-y-flujo-de-trabajo)
+- [Licencia](#-licencia)
 
-```r
-# Cargar el paquete Biostrings
-library(Biostrings)
+---
 
-# Cargar las lecturas cortas (reads)
-reads <- readDNAStringSet("secuencias_bacterianas.fastq", format = "fastq")
-2. Definición del Motivo ($bla$)Un motivo puede ser una secuencia exacta de ADN o una secuencia de consenso usando códigos IUPAC (por ejemplo, R para A/G, Y para C/T). Supongamos que buscamos la secuencia conservada del sitio activo de un gen $bla_{\text{TEM}}$:R# Motivo conservado de interés (ejemplo: sitio activo de betalactamasa)
-motivo_bla <- DNAString("ATGAGTATTCAACATTTCCGT")
-3. Búsqueda y Matching de MotivosPara identificar cuántas lecturas contienen este motivo (incluso permitiendo algunas mutaciones o mismatches), utilizamos la función vcountPattern() o vmatchPattern().vcountPattern(): Cuenta cuántas veces aparece el motivo en cada una de las lecturas.max.mismatch = 1: Permite hasta 1 error de lectura o mutación puntual.R# Buscar el motivo en la hebra directa
-coincidencias_directas <- vcountPattern(
-  pattern = motivo_bla, 
-  subject = reads, 
-  max.mismatch = 1, 
-  fixed = FALSE
-)
+## Propósito del Proyecto
 
-# Buscar en la hebra reverso-complementaria (muy importante en ADN)
-motivo_revcomp <- reverseComplement(motivo_bla)
-coincidencias_reverso <- vcountPattern(
-  pattern = motivo_revcomp, 
-  subject = reads, 
-  max.mismatch = 1, 
-  fixed = FALSE
-)
-4. Cuantificación y MétricasFinalmente, sumamos las detecciones para calcular la abundancia del motivo en la muestra:R# Identificar qué lecturas tienen al menos 1 coincidencia
-lecturas_con_bla <- (coincidencias_directas > 0) | (coincidencias_reverso > 0)
+El objetivo biológico de este proyecto es analizar secuencias de DNA en formato FASTA correspondientes a variantes del gen de resistencia a beta-lactámicos (*ampC*). A través del paquete `Biostrings` de Bioconductor, el script permite:
 
-# Métricas de cuantificación
-total_reads <- length(reads)
-total_bla_reads <- sum(lecturas_con_bla)
-porcentaje_posiciones <- (total_bla_reads / total_reads) * 100
+1. Cargar conjuntos de datos multi-FASTA.
+2. Definir patrones o motivos oligonucleotídicos de interés.
+3. Realizar búsquedas en ambas hebras (directa y reverso complementaria).
+4. Exportar un informe cuantitativo tabulado en formato `.csv` con la longitud de las secuencias y la frecuencia de coincidencias.
 
-cat("Total de lecturas analizadas:", total_reads, "\n")
-cat("Lecturas positivas para gen bla:", total_bla_reads, "\n")
-cat("Abundancia relativa del motivo:", round(porcentaje_posiciones, 4), "%\n")
+---
+
+## Estructura del Repositorio
+
+El proyecto mantiene una estructura estandarizada para garantizar la reproducibilidad:
+
+```text
+amr-motifs/
+├── data/
+│   └── secuencias_ampC.fa       # Archivo FASTA con secuencias de entrada
+├── scripts/
+│   └── busqueda_motivos.R       # Script principal de procesamiento en R
+├── results/
+│   └── reporte_de_resistencia.csv # Archivo CSV generado con las coincidencias
+├── .gitignore                   # Archivos y carpetas excluidos de Git
+├── LICENSE                      # Licencia MIT del proyecto
+└── README.md                    # Documentación principal del repositorio
