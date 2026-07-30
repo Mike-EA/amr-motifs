@@ -14,6 +14,7 @@ Pipeline en R para la identificación, búsqueda bidireccional y cuantificación
 - [Objetivos de Aprendizaje](#-objetivos-de-aprendizaje)
 - [Estructura del Repositorio](#-estructura-del-repositorio)
 - [Requisitos y Dependencias](#-requisitos-y-dependencias)
+- [Clonar el Repositorio](#-clonar-el-repositorio)
 - [Instrucciones de Uso](#-instrucciones-de-uso)
 - [Licencia](#-licencia)
 
@@ -71,6 +72,16 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("Biostrings")
 ```
 
+## Clonar el Repositorio
+Para obtener una copia local de este proyecto en tu computadora, ejecuta los siguientes comandos en la terminal:
+
+```bash
+git clone https://github.com/Mike-EA/amr-motifs.git
+cd amr-motifs
+```
+
+Si prefieres usar un repositorio específico, reemplaza `tu-usuario` por tu nombre de usuario o la organización correspondiente.
+
 ## Interpretación de Resultados
 El script genera un archivo `results/reporte_de_resistencia.csv` con una fila por cada secuencia de entrada y las siguientes columnas:
 
@@ -89,3 +100,7 @@ El script genera un archivo `results/reporte_de_resistencia.csv` con una fila po
 - Las coincidencias en la hebra directa y en la hebra reversa complementaria ayudan a evaluar si el motivo está presente en cualquiera de las dos orientaciones de la molécula de ADN.
 - Un mayor número de motivos conservados puede indicar una mayor probabilidad de que la secuencia pertenezca a una variante de un gen de resistencia bien conservado.
 - Es importante combinar estos resultados con análisis adicionales (alineamientos, anotaciones genéticas y evidencia fenotípica) antes de concluir sobre resistencia antimicrobiana.
+
+## instuciones de uso 
+instalar las dependencias 
+
