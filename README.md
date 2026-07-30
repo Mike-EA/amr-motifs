@@ -30,6 +30,18 @@ El objetivo biológico de este repositorio es analizar secuencias de DNA en form
 
 ---
 
+## Objetivos de Aprendizaje
+
+Al interactuar con este repositorio y ejecutar el script principal, los usuarios serán capaces de:
+
+- **Procesamiento de Archivos Genómicos:** Importar y manipular secuencias de DNA múltiples en R utilizando las clases y estructuras especializadas del paquete `Biostrings`.
+- **Reconocimiento de Patrones (Pattern Matching):** Definir, localizar y cuantificar motivos oligonucleotídicos específicos asociados a genes de resistencia antimicrobiana.
+- **Análisis Bidireccional de DNA:** Comprender e implementar la lógica de búsqueda computacional evaluando tanto la hebra directa como la hebra reverso complementaria.
+- **Gestión de Datos y Reportería:** Extraer métricas biológicas (como la longitud total y el conteo de motivos por secuencia) y consolidarlas en *dataframes* exportables a formatos estandarizados (`.csv`).
+- **Reproducibilidad Computacional:** Navegar y utilizar una estructura de directorios convencional (`data/`, `scripts/`, `results/`) diseñada para mantener el orden y la reproducibilidad en proyectos de biología computacional.
+
+---
+
 ## Estructura del Proyecto
 
 El proyecto mantiene una estructura estandarizada para garantizar la reproducibilidad:
