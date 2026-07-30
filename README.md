@@ -70,3 +70,22 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 
 BiocManager::install("Biostrings")
 ```
+
+## Interpretación de Resultados
+El script genera un archivo `results/reporte_de_resistencia.csv` con una fila por cada secuencia de entrada y las siguientes columnas:
+
+- `Secuencia`: el nombre de la secuencia tal como aparece en el archivo FASTA.
+- `Longitud_bp`: la longitud de la secuencia en pares de bases.
+- `Coincidencias_Hebra_Directa`: número de veces que el motivo definido aparece en la hebra directa.
+- `Coincidencias_Hebra_Reversa`: número de veces que aparece el motivo reverso complementario en la hebra inversa.
+- `Total_Motivos`: suma de coincidencias en ambas hebras.
+
+### Cómo interpretar cada columna
+- Un valor `0` en `Coincidencias_Hebra_Directa` o `Coincidencias_Hebra_Reversa` indica que el motivo no se encontró en esa hebra.
+- Un valor mayor que `0` en cualquiera de las columnas de coincidencias sugiere la presencia de un motivo conservado asociado a genes de resistencia beta-lactamasa.
+- `Total_Motivos` permite comparar la carga de motivos entre secuencias y detectar aquellas con mayor densidad de patrones compatibles con AMR.
+
+### Relevancia biológica
+- Las coincidencias en la hebra directa y en la hebra reversa complementaria ayudan a evaluar si el motivo está presente en cualquiera de las dos orientaciones de la molécula de ADN.
+- Un mayor número de motivos conservados puede indicar una mayor probabilidad de que la secuencia pertenezca a una variante de un gen de resistencia bien conservado.
+- Es importante combinar estos resultados con análisis adicionales (alineamientos, anotaciones genéticas y evidencia fenotípica) antes de concluir sobre resistencia antimicrobiana.
