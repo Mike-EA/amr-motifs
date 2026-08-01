@@ -71,8 +71,10 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 
 BiocManager::install("Biostrings")
 ```
+---
+# Instrucciones de uso
 
-## Clonar el Repositorio
+### 1. Clonar el Repositorio
 Para obtener una copia local de este proyecto en tu computadora, ejecuta los siguientes comandos en la terminal:
 
 ```bash
@@ -82,7 +84,7 @@ cd amr-motifs
 
 Si prefieres usar un repositorio específico, reemplaza `tu-usuario` por tu nombre de usuario o la organización correspondiente.
 
-## Interpretación de Resultados
+### 2. Interpretación de Resultados
 El script genera un archivo `results/reporte_de_resistencia.csv` con una fila por cada secuencia de entrada y las siguientes columnas:
 
 - `Secuencia`: el nombre de la secuencia tal como aparece en el archivo FASTA.
@@ -101,6 +103,35 @@ El script genera un archivo `results/reporte_de_resistencia.csv` con una fila po
 - Un mayor número de motivos conservados puede indicar una mayor probabilidad de que la secuencia pertenezca a una variante de un gen de resistencia bien conservado.
 - Es importante combinar estos resultados con análisis adicionales (alineamientos, anotaciones genéticas y evidencia fenotípica) antes de concluir sobre resistencia antimicrobiana.
 
-## instuciones de uso 
-instalar las dependencias 
+### 3. Personalización del Script en RStudio
+1. Abre el proyecto en RStudio abriendo el archivo del script uibicado en `scripts/amr_motifs_script.R`.
+2. Edita las variables de configuración al inicio del script según los requerimientos de tu análisis:
+```{r}
+# Parámetros editables del análisis
+archivo_fasta   <- "data/mis_secuencias.fa"   # Ruta a tu archivo FASTA
+motivo_secuencia <- "AAAACGGG"                 # Motivo oligonucleotídico a buscar
 
+```
+### 4. Ejecución del análisis y Generación de Reportes
+Puedes correr el análisis de dos formas:
+- **Desde RStudio:** selecciona todo el código en `scripts/amr_motifs_script.R` y presiona `Ctrl + Enter`, o `Cmd + Enter`en macOS.
+- **Desde la línea de comandos/terminal**:
+```{bash}
+ Rscript scripts/busqueda_motivos.R
+```
+
+### 5. Interpretación de Resultados
+Una vez completada la ejecución, se generará de forma automática el archivo de reporte en la ruta `results/reporte_de_resistencia.csv`.
+
+La tabla resultante contendrá la siguiente estructura:
+
+| Secuencia | Longitud_bp | Coincidencias_Hebra_Directa | Coincidencias_Hebra_Reversa | Total_Motivos |
+| :--- | :---: | :---: | :---: | :---: |
+| `gene_ampC_Ecoli_01` | 1146 | 0 | 0 | 0 |
+| `gene_ampC_Kpneumoniae_02` | 1152 | 0 | 0 | 0 |
+| `contig_ampC_Paeruginosa_03` | 65800 | 1 | 0 | 1 |
+
+---
+
+### Licencia
+Este proyecto se distribuye bajo la Licencia MIT, lo que permite su uso, modificación y distribución con fines académicos y comerciales. Para más información, consulta el archivo LICENSE en la raíz del repositorio.
