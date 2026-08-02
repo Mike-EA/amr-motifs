@@ -50,7 +50,7 @@ El proyecto mantiene una estructura estandarizada para garantizar la reproducibi
 ```text
 amr-motifs/
 ├── data/
-│   └── secuencias_ampC.fa       # Archivo FASTA con secuencias de entrada
+│   └── mis_secuencias.fa       # Archivo FASTA con secuencias de entrada
 ├── scripts/
 │   └── amr_motifs_script.R       # Script principal de procesamiento en R
 ├── results/
@@ -106,7 +106,7 @@ motivo_secuencia <- "AAAACGGG"                 # Motivo oligonucleotídico a bus
 **Parámetros avanzados editables**
   - ***Búsqueda bidireccional:*** puedes activar o desactivar la búsqueda en la hebra complementaria ajustando los objetos `motivo_fwd`y `motivo_rev`.
   - ***Flexibilidad de búsqueda:*** si estás utilizando códigos de nucleótidos degenerados de nomenclatura IUPAC, como `R`para A/G o `Y` para C/T, cambia el argumento a `fixed = FALSE` en la función `vmatchPattern()`, por defatul su configuracioón es `fixed = TRUE`.
-  
+
 ### 4. Ejecución del análisis y Generación de Reportes
 Puedes correr el análisis de dos formas:
 - **Desde RStudio:** selecciona todo el código en `scripts/amr_motifs_script.R` y presiona `Ctrl + Enter`, o `Cmd + Enter`en macOS.
