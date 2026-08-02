@@ -52,7 +52,7 @@ amr-motifs/
 ├── data/
 │   └── secuencias_ampC.fa       # Archivo FASTA con secuencias de entrada
 ├── scripts/
-│   └── busqueda_motivos.R       # Script principal de procesamiento en R
+│   └── amr_motifs_script.R       # Script principal de procesamiento en R
 ├── results/
 │   └── reporte_de_resistencia.csv # Archivo CSV generado con las coincidencias
 ├── .gitignore                   # Archivos y carpetas excluidos de Git
@@ -84,24 +84,14 @@ cd amr-motifs
 
 Si prefieres usar un repositorio específico, reemplaza `tu-usuario` por tu nombre de usuario o la organización correspondiente.
 
-### 2. Interpretación de Resultados
-El script genera un archivo `results/reporte_de_resistencia.csv` con una fila por cada secuencia de entrada y las siguientes columnas:
+### 2. Preparación de Datos de Entrada
+Para ejecutar el análisis con tus propias secuencias o variantes génicas, debes preparar la información dentro de la carpeta `data/`:
 
-- `Secuencia`: el nombre de la secuencia tal como aparece en el archivo FASTA.
-- `Longitud_bp`: la longitud de la secuencia en pares de bases.
-- `Coincidencias_Hebra_Directa`: número de veces que el motivo definido aparece en la hebra directa.
-- `Coincidencias_Hebra_Reversa`: número de veces que aparece el motivo reverso complementario en la hebra inversa.
-- `Total_Motivos`: suma de coincidencias en ambas hebras.
-
-### Cómo interpretar cada columna
-- Un valor `0` en `Coincidencias_Hebra_Directa` o `Coincidencias_Hebra_Reversa` indica que el motivo no se encontró en esa hebra.
-- Un valor mayor que `0` en cualquiera de las columnas de coincidencias sugiere la presencia de un motivo conservado asociado a genes de resistencia beta-lactamasa.
-- `Total_Motivos` permite comparar la carga de motivos entre secuencias y detectar aquellas con mayor densidad de patrones compatibles con AMR.
-
-### Relevancia biológica
-- Las coincidencias en la hebra directa y en la hebra reversa complementaria ayudan a evaluar si el motivo está presente en cualquiera de las dos orientaciones de la molécula de ADN.
-- Un mayor número de motivos conservados puede indicar una mayor probabilidad de que la secuencia pertenezca a una variante de un gen de resistencia bien conservado.
-- Es importante combinar estos resultados con análisis adicionales (alineamientos, anotaciones genéticas y evidencia fenotípica) antes de concluir sobre resistencia antimicrobiana.
+1. **Obtención de secuencias (FASTA):**
+    - Descarga las secuencias nucleotídicas de los genes de interés (ej. ***blaTEM, blaSHV, blaCTX-M, ampC***) desde bases de datos biológicas oficiales como NCBI [GeneBank](https://www.ncbi.nlm.nih.gov/genbank/), [CARD](https://card.mcmaster.ca/) o NCBI [ReferenceGeneCatalog](https://www.ncbi.nlm.nih.gov/pathogens/refgene/).
+    - Guarda el archivo en formato `.fa` o `.fasta` dentro del directorio `data/`, por ejemplo, `data/mis_secuencias.fa`.
+2. **Identificación de motivos conservados:**
+    - Consulta la literatura ciantífica o bases de datos de dominio proteico para identificar motivos oligonucleotídicos conservados en regiones catalíticas de interés, por ejemplo, cajas promotoras, sitios de unión a represores AmpR, o tríadas catalíticas conservadas.
 
 ### 3. Personalización del Script en RStudio
 1. Abre el proyecto en RStudio abriendo el archivo del script uibicado en `scripts/amr_motifs_script.R`.
@@ -112,6 +102,11 @@ archivo_fasta   <- "data/mis_secuencias.fa"   # Ruta a tu archivo FASTA
 motivo_secuencia <- "AAAACGGG"                 # Motivo oligonucleotídico a buscar
 
 ```
+
+**Parámetros avanzados editables**
+  - ***Búsqueda bidireccional:*** puedes activar o desactivar la búsqueda en la hebra complementaria ajustando los objetos `motivo_fwd`y `motivo_rev`.
+  - ***Flexibilidad de búsqueda:*** si estás utilizando códigos de nucleótidos degenerados de nomenclatura IUPAC, como `R`para A/G o `Y` para C/T, cambia el argumento a `fixed = FALSE` en la función `vmatchPattern()`, por defatul su configuracioón es `fixed = TRUE`.
+  
 ### 4. Ejecución del análisis y Generación de Reportes
 Puedes correr el análisis de dos formas:
 - **Desde RStudio:** selecciona todo el código en `scripts/amr_motifs_script.R` y presiona `Ctrl + Enter`, o `Cmd + Enter`en macOS.
